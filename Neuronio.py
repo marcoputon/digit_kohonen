@@ -1,7 +1,9 @@
 import random
+from utilitario import *
 
 class Neuronio:
     def __init__(self, tamanho, aleatorio):
+        self.tamanho = tamanho
         if aleatorio == True:
             self.pesos = self.pesos_aleatorios(tamanho)
         else:
@@ -21,3 +23,10 @@ class Neuronio:
             for j in i:
                 print("%.2f" %j, end=" ")
             print()
+
+    def soma_pesos(self, entrada):
+        soma = 0
+        for i in range(self.tamanho[0]):
+            for j in range(self.tamanho[1]):
+                soma += distancia(entrada[i][j], self.pesos[i][j])
+        return soma
