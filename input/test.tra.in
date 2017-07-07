@@ -1,0 +1,66 @@
+BU handwritten digit database: E Alpaydin C Kaynak 1995
+Training file
+
+entwidth = 32
+entheight = 32
+depth = 1
+density = 300
+whitepix = 0
+ntot = 1934
+ndigit = 1934
+nlower = 0
+nupper = 0
+nparag = 0
+firstdigit = 0
+lastdigit = 0
+firstlower = 0
+lastlower = 0
+firstupper = 0
+lastupper = 0
+firstparag = 0
+lastparag = 0
+0010
+1011
+1010
+0111
+ 1
+0010
+1011
+1010
+0111
+ 1
+0010
+1011
+1010
+0111
+ 1
+0010
+1011
+1010
+0111
+ 1
+0010
+1011
+1010
+0111
+ 1
+0010
+1011
+1010
+0111
+ 1
+0010
+1011
+1010
+0111
+ 1
+0010
+1011
+1010
+0111
+ 1
+0010
+1011
+1010
+0111
+ 1

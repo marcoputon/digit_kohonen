@@ -5,14 +5,41 @@ import time
 
 def armazenar(grade, path):
     f = open(path, "w")
+    for i in range(21):
+        f.write("perdi\n")
 
     for i in range(grade.tam_grade[0]):
         for j in range(grade.tam_grade[1]):
             ng = neuronio_para_string(grade.grade[i][j])
             for k in ng:
                 f.write(k + "\n")
-            f.write("-\n")
+            f.write(" -\n")
     f.close()
+
+
+def read_output(path):
+    foo = open(path)
+
+    f = []
+    for i in foo:
+        f.append(i[:len(i) - 1])
+    return f[21:]
+
+def split_block_out(f):
+    blocks = []
+    block = []
+    for i in f:
+        if len(i) == 2:
+            blocks.append(np.matrix(block))
+            block = []
+        else:
+            int_list = []
+            m = i.split(" ")
+            for j in m:
+
+                int_list.append(float(j))
+            block.append(int_list)
+    return blocks
 
 
 def neuronio_para_string(neuronio):
@@ -21,18 +48,19 @@ def neuronio_para_string(neuronio):
         l = ""
         for j in range(neuronio.tamanho[1]):
             l += str(neuronio.pesos[i, j]) + " "
-        n.append(l)
+        n.append(l[:len(l) - 1])
     return n
 
-def carregar(path):
-    foo = open(path)
-    f = ""
-    for i in foo:
-        f += i
 
-    f = f.split("-\n")
+def get_output_blocks(path):
+    return split_block_out(read_output(path))
 
-    for i in f:
-        block = i.split(" ")
-        print(block)
-        print("------------------------------------------------")
+
+def carregar(g, path):
+    pesos = get_output_blocks(path)
+
+    for i in range(g.tam_grade[0]):
+        for j in range(g.tam_grade[1]):
+            n = Neuronio(g.tam_entrada, False)
+            n.pesos = pesos[i * g.tam_grade[0] + j]
+            g.grade[i][j] = n
