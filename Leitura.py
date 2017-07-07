@@ -1,3 +1,5 @@
+import numpy as np
+
 def read_input(path):
     foo = open(path)
 
@@ -11,7 +13,7 @@ def split_block(f):
     block = []
     for i in f:
         if len(i) == 2:
-            blocks.append(block)
+            blocks.append(np.matrix(block))
             block = []
         else:
             int_list = []

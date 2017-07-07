@@ -1,7 +1,7 @@
 import numpy as np
 
 def distancia(a, b):
-    return ((a - b) ** 2) ** (1/2)
+    return abs(a - b)
 
 
 def som_matriz(a, b):
