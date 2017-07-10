@@ -2,23 +2,24 @@ import numpy as np
 from Grade import *
 from Leitura import *
 from Saida import *
+from PIL import Image, ImageFont, ImageDraw
 import time
 np.set_printoptions(threshold=np.inf)
 
 t0 = time.time()
 print("> Lendo arquivo de entrada")
 input_grids = get_input_blocks("input/optdigits-orig.windep.in")
-#input_grids = get_input_blocks("input/optdigits-orig.tra.in")
-test_list = input_grids[:100]
+entrada_treino = get_input_blocks("input/optdigits-orig.tra.in")
+test_list = input_grids[:3]
 
 g = Grade((10, 10), (32, 32), 0.1, 0.00001)
 '''
 carregar(g, "output/toda-entrada.tra.out")
-
 '''
+
 print("> Iniciando treinamento")
 ti = time.time()
-g.treinar(input_grids)
+g.treinar(test_list)
 tf = time.time()
 print("> Término do treinamento")
 
@@ -26,8 +27,15 @@ print()
 print(">>> Tempo de treinamento: %fs"%(tf - ti))
 print(">>> Tempo total:          %fs" %(tf - t0))
 
-'''
-'''
+alpha = 50
+m = 50
+im = Image.new('RGB', (g.tam_grade[0] * m, g.tam_grade[1] * m), (200, 200, 200))
+dr = ImageDraw.Draw(im, "RGBA")
+
+for i in range(g.tam_grade[0]):
+    for j in range(g.tam_grade[1]):
+        dr.rectangle( ((i * m, j * m), (i * m + 50, j * m + 50)), fill=(255, 255, 255, 255), outline = "black")
+
 
 list0 = [input_grids[0], input_grids[10], input_grids[20]]
 list1 = [input_grids[1], input_grids[11], input_grids[21]]
@@ -41,10 +49,35 @@ list8 = [input_grids[8], input_grids[18], input_grids[28]]
 list9 = [input_grids[9], input_grids[19], input_grids[29]]
 
 print("-- 0 --")
-print(g.reconhece(list0[0]))
-print(g.reconhece(list0[1]))
-print(g.reconhece(list0[2]))
+cor = (255, 0, 0, alpha)
+z0 = g.reconhece(list0[0])
+print(z0[0])
+dr.rectangle( ((z0[0][1] * m, z0[0][0] * m), (z0[0][1] * m + 50, z0[0][0] * m + 50)), fill = cor, outline = "black")
 
+z0 = g.reconhece(list0[1])
+print(z0[0])
+dr.rectangle( ((z0[0][1] * m, z0[0][0] * m), (z0[0][1] * m + 50, z0[0][0] * m + 50)), fill = cor, outline = "black")
+
+z0 = g.reconhece(list0[2])
+print(z0[0])
+dr.rectangle( ((z0[0][1] * m, z0[0][0] * m), (z0[0][1] * m + 50, z0[0][0] * m + 50)), fill = cor, outline = "black")
+
+
+print("-- 1 --")
+cor = (0, 0, 255, alpha)
+z0 = g.reconhece(list1[0])
+print(z0[0])
+dr.rectangle( ((z0[0][1] * m, z0[0][0] * m), (z0[0][1] * m + 50, z0[0][0] * m + 50)), fill = cor, outline = "black")
+
+z0 = g.reconhece(list1[1])
+print(z0[0])
+dr.rectangle( ((z0[0][1] * m, z0[0][0] * m), (z0[0][1] * m + 50, z0[0][0] * m + 50)), fill = cor, outline = "black")
+
+z0 = g.reconhece(list1[2])
+print(z0[0])
+dr.rectangle( ((z0[0][1] * m, z0[0][0] * m), (z0[0][1] * m + 50, z0[0][0] * m + 50)), fill = cor, outline = "black")
+
+'''
 print("-- 1 --")
 print(g.reconhece(list1[0]))
 print(g.reconhece(list1[1]))
@@ -91,6 +124,6 @@ print(g.reconhece(list9[1]))
 print(g.reconhece(list9[2]))
 
 
-'''
 armazenar(g, "output/toda-entrada.tra.out")
 '''
+im.save("teste.png")
