@@ -26,17 +26,19 @@ class Grade:
         print("%d/%d" %(c, a))
 
 
-    def repesa_neuronio(self, neuronio, entrada, alpha):
-        return neuronio.pesos + self.vizinhanca(neuronio) * alpha * (entrada - neuronio.pesos)
+    def repesa_neuronio(self, indice_neuronio, entrada, alpha):
+        neuronio = self.grade[indice_neuronio[0]][indice_neuronio[1]]
+        return neuronio.pesos + self.vizinhanca(indice_neuronio) * alpha * (entrada - neuronio.pesos)
 
 
     def iteracao(self, entrada, alpha):
         self.BMU = self.melhor_neuronio(entrada)
         for i in range(self.tam_grade[0]):
             for j in range(self.tam_grade[1]):
-                self.grade[i][j].pesos = self.repesa_neuronio(self.grade[i][j], entrada, alpha)
+                self.grade[i][j].pesos = self.repesa_neuronio((i, j), entrada, alpha)
 
-    def vizinhanca(self, neuronio):
+    def vizinhanca(self, indice_neuronio):
+        neuronio = self.grade[indice_neuronio[0]][indice_neuronio[1]]
         melhor = self.grade[self.BMU[0][0]][self.BMU[0][1]]
         S = neuronio.soma_de_pesos(melhor.pesos)
         return e ** ((-(S ** 2)) / (2 * ((self.tam_entrada[0] * self.tam_entrada[1]) ** 2)))

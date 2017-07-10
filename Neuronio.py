@@ -29,8 +29,8 @@ class Neuronio:
         soma = 0
         for i in range(self.tamanho[0]):
             for j in range(self.tamanho[1]):
-                soma += distancia(entrada[i, j], self.pesos[i, j])
-        return soma
+                soma += (distancia(entrada[i, j], self.pesos[i, j])) ** 2
+        return soma ** (1/2)
 
     def atualiza_peso(self, entrada, melhor):
         pass

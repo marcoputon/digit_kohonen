@@ -8,10 +8,11 @@ np.set_printoptions(threshold=np.inf)
 t0 = time.time()
 print("> Lendo arquivo de entrada")
 input_grids = get_input_blocks("input/optdigits-orig.tra.in")
-test_list = input_grids[:30]
+test_list = input_grids[:100]
 
 g = Grade((10, 10), (32, 32), 0.1, 0.01)
 
+'''
 print("> Iniciando treinamento")
 ti = time.time()
 g.treinar(input_grids)
@@ -21,7 +22,9 @@ print("> Término do treinamento")
 print()
 print(">>> Tempo de treinamento: %fs"%(tf - ti))
 print(">>> Tempo total:          %fs" %(tf - t0))
+'''
 
+carregar(g, "output/toda-entrada.tra.out")
 
 list0 = [test_list[0], test_list[1], test_list[8]]
 list7 = [test_list[2], test_list[10], test_list[17]]
@@ -42,5 +45,5 @@ print(g.reconhece(list4[0]))
 print(g.reconhece(list4[1]))
 print(g.reconhece(list4[2]))
 '''
-'''
 armazenar(g, "output/toda-entrada.tra.out")
+'''

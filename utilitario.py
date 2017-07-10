@@ -1,7 +1,10 @@
 import numpy as np
 
 def distancia(a, b):
-    return abs(a - b)
+    return a - b
+
+def dist_eclidiana(a, b):
+    return ((a[0] - b[0])**2 + (a[1] - b[1])**2)**(1/2)
 
 
 def som_matriz(a, b):
