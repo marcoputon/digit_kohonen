@@ -33,8 +33,15 @@ class Grade:
 
     def iteracao(self, entrada, alpha):
         self.BMU = self.melhor_neuronio(entrada)
-        for i in self.vizinhos(self.BMU[0]):
+        for i in self.vizinhos2(self.BMU[0]):
             self.grade[i[0]][i[1]].pesos = self.repesa_neuronio((i[0], i[1]), entrada, alpha)
+
+    def vizinhos2(self, x):
+        l = []
+        for i in range(self.tam_grade[0]):
+            for j in range(self.tam_grade[1]):
+                l.append((i, j))
+        return l
 
     def vizinhanca(self, indice_neuronio):
         neuronio = self.grade[indice_neuronio[0]][indice_neuronio[1]]

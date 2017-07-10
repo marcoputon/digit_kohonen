@@ -24,3 +24,20 @@ def split_block(f):
 
 def get_input_blocks(path):
     return split_block(read_input(path))
+
+def get_input_blocks_training(path):
+    return split_block_training(read_input(path))
+
+def split_block_training(f):
+    blocks = []
+    block = []
+    for i in f:
+        if len(i) == 2:
+            blocks.append([np.matrix(block), i[1:]])
+            block = []
+        else:
+            int_list = []
+            for j in i:
+                int_list.append(int(j))
+            block.append(int_list)
+    return blocks
