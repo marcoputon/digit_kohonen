@@ -21,21 +21,20 @@ class Grade:
         for i in entrada_de_treino:
             print("%d/%d" %(c, a), end = "\r")
             self.iteracao(i, alpha)
-            alpha *= self.taxa
+            alpha -= self.taxa
             c += 1
         print("%d/%d" %(c, a))
 
 
     def repesa_neuronio(self, indice_neuronio, entrada, alpha):
         neuronio = self.grade[indice_neuronio[0]][indice_neuronio[1]]
-        return neuronio.pesos + self.vizinhanca(indice_neuronio) * alpha * (entrada - neuronio.pesos)
+        return neuronio.pesos + self.vizinhanca2(indice_neuronio) * alpha * (entrada - neuronio.pesos)
 
 
     def iteracao(self, entrada, alpha):
         self.BMU = self.melhor_neuronio(entrada)
-        for i in range(self.tam_grade[0]):
-            for j in range(self.tam_grade[1]):
-                self.grade[i][j].pesos = self.repesa_neuronio((i, j), entrada, alpha)
+        for i in self.vizinhos(self.BMU[0]):
+            self.grade[i[0]][i[1]].pesos = self.repesa_neuronio((i[0], i[1]), entrada, alpha)
 
     def vizinhanca(self, indice_neuronio):
         neuronio = self.grade[indice_neuronio[0]][indice_neuronio[1]]
@@ -43,6 +42,10 @@ class Grade:
         S = neuronio.soma_de_pesos(melhor.pesos)
         return e ** ((-(S ** 2)) / (2 * ((self.tam_entrada[0] * self.tam_entrada[1]) ** 2)))
 
+    def vizinhanca2(self, indice_neuronio):
+        melhor = self.grade[self.BMU[0][0]][self.BMU[0][1]]
+        S = dist_eclidiana(indice_neuronio, self.BMU[0])
+        return e ** ((-(S ** 2)) / (2 * ((self.tam_entrada[0] * self.tam_entrada[1]) ** 2)))
 
     def grade_aleatoria(self, tam_grade, tam_entrada):
         grade = []
@@ -71,3 +74,34 @@ class Grade:
                 if sd < melhor[1]:
                     melhor = ((i, j), sd)
         return melhor
+
+    #   pos = (i, j)
+    def vizinhos(self, pos):
+        vizinhos = []
+        tam_grade = self.tam_grade
+
+        if pos[0] + 1 in range(tam_grade[0]) and pos[1] in range(tam_grade[1]):
+            vizinhos.append([pos[0] + 1, pos[1]])
+
+        if pos[0] in range(tam_grade[0]) and pos[1] + 1 in range(tam_grade[1]):
+            vizinhos.append([pos[0], pos[1] + 1])
+
+        if pos[0] in range(tam_grade[0]) and pos[1] - 1 in range(tam_grade[1]):
+            vizinhos.append([pos[0], pos[1] - 1])
+
+        if pos[0] - 1 in range(tam_grade[0]) and pos[1] + 1 in range(tam_grade[1]):
+            vizinhos.append([pos[0] - 1, pos[1] + 1])
+
+        if pos[0] - 1 in range(tam_grade[0]) and pos[1] - 1 in range(tam_grade[1]):
+            vizinhos.append([pos[0] - 1, pos[1] - 1])
+
+        if pos[0] + 1 in range(tam_grade[0]) and pos[1] - 1 in range(tam_grade[1]):
+            vizinhos.append([pos[0] + 1, pos[1] - 1])
+
+        if pos[0] + 1 in range(tam_grade[0]) and pos[1] - 1 in range(tam_grade[1]):
+            vizinhos.append([pos[0] + 1, pos[1] - 1])
+
+        if pos[0] - 1 in range(tam_grade[0]) and pos[1] in range(tam_grade[1]):
+            vizinhos.append([pos[0] - 1, pos[1]])
+
+        return vizinhos
