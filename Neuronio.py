@@ -8,7 +8,7 @@ class Neuronio:
         if aleatorio == True:
             self.pesos = self.pesos_aleatorios(tamanho)
         else:
-            self.pesos = np.matrix(tamanho[0] * [tamanho[1] * [1]])
+            self.pesos = np.array(tamanho[0] * [tamanho[1] * [1]])
 
     def pesos_aleatorios(self, tamanho):
         pesos = []
@@ -17,7 +17,7 @@ class Neuronio:
             for j in range(tamanho[1]):
                 linha.append(random.uniform(0, 1))
             pesos.append(linha)
-        return np.matrix(pesos)
+        return np.array(pesos)
 
     def print_pesos(self):
         for i in self.pesos:
@@ -26,11 +26,8 @@ class Neuronio:
             print()
 
     def soma_de_pesos(self, entrada):
-        soma = 0
-        for i in range(self.tamanho[0]):
-            for j in range(self.tamanho[1]):
-                soma += (distancia(entrada[i, j], self.pesos[i, j])) ** 2
-        return soma ** (1/2)
+        return sum(sum((entrada - self.pesos) ** 2))
+
 
     def atualiza_peso(self, entrada, melhor):
         pass

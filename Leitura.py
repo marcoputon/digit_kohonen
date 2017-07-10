@@ -13,7 +13,7 @@ def split_block(f):
     block = []
     for i in f:
         if len(i) == 2:
-            blocks.append(np.matrix(block))
+            blocks.append(np.array(block))
             block = []
         else:
             int_list = []
@@ -33,7 +33,7 @@ def split_block_training(f):
     block = []
     for i in f:
         if len(i) == 2:
-            blocks.append([np.matrix(block), i[1:]])
+            blocks.append([np.array(block), i[1:]])
             block = []
         else:
             int_list = []

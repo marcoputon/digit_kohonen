@@ -30,7 +30,7 @@ def split_block_out(f):
     block = []
     for i in f:
         if len(i) == 2:
-            blocks.append(np.matrix(block))
+            blocks.append(np.array(block))
             block = []
         else:
             int_list = []

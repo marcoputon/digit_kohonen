@@ -1,5 +1,6 @@
 from Neuronio import *
 from math import e
+import time
 
 class Grade:
     def __init__(self, tam_grade, tam_entrada, alpha, taxa):
@@ -14,14 +15,16 @@ class Grade:
         self.iteracao(entrada, self.alpha)
         return self.BMU
 
+    def reconhece2(self, entrada):
+        return self.melhor_neuronio(entrada)
+
     def treinar(self, entrada_de_treino):
         alpha = self.alpha
         c = 0
         a = len(entrada_de_treino)
         for i in entrada_de_treino:
             print("%d/%d" %(c, a), end = "\r")
-            self.iteracao(i, alpha)
-            alpha -= self.taxa
+            self.iteracao(i, alpha)            
             c += 1
         print("%d/%d" %(c, a))
 
@@ -33,7 +36,8 @@ class Grade:
 
     def iteracao(self, entrada, alpha):
         self.BMU = self.melhor_neuronio(entrada)
-        for i in self.vizinhos2(self.BMU[0]):
+
+        for i in self.vizinhos(self.BMU[0]):
             self.grade[i[0]][i[1]].pesos = self.repesa_neuronio((i[0], i[1]), entrada, alpha)
 
     def vizinhos2(self, x):

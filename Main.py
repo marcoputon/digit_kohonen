@@ -10,14 +10,14 @@ t0 = time.time()
 print("> Lendo arquivo de entrada")
 input_grids = get_input_blocks("input/optdigits-orig.windep.in")
 entrada_treino = get_input_blocks("input/optdigits-orig.tra.in")
-test_list = input_grids[:30]
+test_list = input_grids[:100]
 
 g = Grade((10, 10), (32, 32), 0.1, 0.00001)
-carregar(g, "output/toda-entrada.tra.out")
+#carregar(g, "output/toda-entrada.tra.out")
 
 print("> Iniciando treinamento")
 ti = time.time()
-g.treinar(test_list)
+g.treinar(entrada_treino)
 tf = time.time()
 print("> Término do treinamento")
 
@@ -26,6 +26,7 @@ print(">>> Tempo de treinamento: %fs"%(tf - ti))
 print(">>> Tempo total:          %fs" %(tf - t0))
 '''
 '''
+armazenar(g, "output/toda-entrada.tra.out")
 
 alpha = 50
 m = 200
@@ -39,7 +40,6 @@ for i in range(g.tam_grade[0]):
 
 
 '''
-armazenar(g, "output/toda-entrada.tra.out")
 '''
 
 fnt = ImageFont.truetype('Pillow/Tests/fonts/FreeMono.ttf', fs)
@@ -55,19 +55,19 @@ colors = {'0':(255, 255, 0, alpha), #amarelo
           '9':(255, 0, 0, alpha)    #vermelho
 }
 desenhar = {}
-lista_de_treino = get_input_blocks_training("input/optdigits-orig.tra.in")[:100]
+lista_de_treino = get_input_blocks_training("input/optdigits-orig.tra.in")
+tti = time.time()
 for i in lista_de_treino:
-    z = g.reconhece(i[0])
+    z = g.reconhece2(i[0])
+    '''
+    '''
     try:
         desenhar[z[0]].append(i[1])
     except:
         desenhar[z[0]] = [i[1]]
-    print(z[0])
+ttf = time.time()
 
-
-for i in desenhar:
-    print(i, desenhar[i])
-
+print("Tempo de reconhecimento:", ttf - tti)
 
 
 for i in desenhar:
@@ -76,12 +76,7 @@ for i in desenhar:
         dr.rectangle( ((i[1] * m, i[0] * m), (i[1] * m + m, i[0] * m + m)), fill = colors[j], outline = "black")
         dr.text(((i[1] * m) + c * fs * 2/3, i[0] * m + m/2 - fs/2), j, font=fnt, fill=(0, 0, 0))
         c += 1
-'''
     #desenhar[i]
-
-    dr.rectangle( ((z0[0][1] * m, z0[0][0] * m), (z0[0][1] * m + m, z0[0][0] * m + m)), fill = colors[i[1]], outline = "black")
-    dr.text((z0[0][1] * m + m/2 - fs/2, z0[0][0] * m + m/2 - fs/2), i[1], font=fnt, fill=(255, 0, 0))
-'''
 
 
 im.save("teste.png")
