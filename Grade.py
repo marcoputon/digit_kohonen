@@ -1,4 +1,5 @@
 from Neuronio import *
+from utilitario import most_common
 from math import e
 import time
 
@@ -10,10 +11,38 @@ class Grade:
         self.tam_entrada = tam_entrada
         self.grade = self.grade_aleatoria(tam_grade, tam_entrada)
         self.BMU = None
+        self.rec_grid = None
 
-    def reconhece(self, entrada):
-        self.iteracao(entrada, self.alpha)
-        return self.BMU
+
+    def reconhece_digito(self, entrada):
+        indice = self.reconhece2(entrada)[0]
+        try:
+            d = self.rec_grid[indice]
+        except:
+            d = -1
+        return d
+
+    def reconhece_lista(self, lista_de_teste):
+        hits = 0
+        for i in lista_de_teste:
+            d = self.reconhece_digito(i[0])
+            if d == i[1]:
+                hits += 1
+        return ((hits / len(lista_de_teste)) * 100)
+
+    def grade_de_reconhecimento(self, lista_de_teste):
+        desenhar = {}
+        for i in lista_de_teste:
+            z = self.reconhece2(i[0])
+            try:
+                desenhar[z[0]].append(i[1])
+            except:
+                desenhar[z[0]] = [i[1]]
+
+        for i in desenhar:
+            desenhar[i] = most_common(desenhar[i])
+
+        self.rec_grid = desenhar
 
     def reconhece2(self, entrada):
         return self.melhor_neuronio(entrada)
@@ -24,7 +53,7 @@ class Grade:
         a = len(entrada_de_treino)
         for i in entrada_de_treino:
             print("%d/%d" %(c, a), end = "\r")
-            self.iteracao(i, alpha)            
+            self.iteracao(i, alpha)
             c += 1
         print("%d/%d" %(c, a))
 

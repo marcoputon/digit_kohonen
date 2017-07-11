@@ -1,89 +1,72 @@
+from PIL import Image, ImageFont, ImageDraw
 import numpy as np
+import time
 from Grade import *
 from Leitura import *
 from Saida import *
-from PIL import Image, ImageFont, ImageDraw
-import time
-np.set_printoptions(threshold=np.inf)
+from Desenho import *
+
+########################## VARIAVEIS DE CONFIGURAÇÂO ##########################
+
+carregar_treino = "output/0.5-0.85toda-entrada.tra.out" # Arquivo de treino armazenado anteriormente
+treinar         = "input/optdigits-orig.tra.in"         # Arquivo de entrada para treinar
+teste_de_acerto = "input/optdigits-orig.windep.in"      # Arquivo de entrada para testar taxa de acerto
+teste_de_treino = "input/optdigits-orig.cv.in"          # Arquivo de entrada gerar a grade de reconhecimento
+n_iter          = 5                                     # Quantidade de iterações de treino
+
+CARREGAR_TREINO                 = True
+TREINAR                         = False
+ARMAZENAR                       = False
+GERAR_GRADE_RECONHECIMENTO      = True
+CALCULAR_TAXA_ACERTOS           = True
+DESENHAR_GRADE_MESCLADA         = False
+DESENHAR_GRADE_RECONHECIMENTO   = False
+
+###############################################################################
 
 t0 = time.time()
 print("> Lendo arquivo de entrada")
-input_grids = get_input_blocks("input/optdigits-orig.windep.in")
-entrada_treino = get_input_blocks("input/optdigits-orig.tra.in")
-test_list = input_grids[:100]
+entrada_acertos = get_input_blocks_training(teste_de_acerto)
+entrada_treino = get_input_blocks(treinar)
+entrada_teste = get_input_blocks_training(teste_de_treino)
 
-g = Grade((20, 20), (32, 32), 0.5, 0.9)
-#carregar(g, "output/toda-entrada.tra.out")
+print("> Gerando grade de neurônios")
+g = Grade((20, 20), (32, 32), 0.5, 0.85)
 
-for i in range(10):
-    print("> Iniciando treinamento")
+if CARREGAR_TREINO:
+    print("> Carregando treino")
+    carregar(g, carregar_treino)
+
+if TREINAR:
+    print("> Treinando")
     ti = time.time()
-    g.treinar(entrada_treino)
+    for i in range(n_iter):
+        print("> Treinamento -", i)
+        g.treinar(entrada_treino)
+        g.alpha *= g.taxa
     tf = time.time()
-    print("> Término do treinamento")
-    g.alpha *= g.taxa
+    print()
+    print(">>> Tempo de treinamento: %fs"%(tf - ti))
 
-print()
-print(">>> Tempo de treinamento: %fs"%(tf - ti))
-print(">>> Tempo total:          %fs" %(tf - t0))
-'''
-'''
-armazenar(g, "output/toda-entrada.tra.out")
+if ARMAZENAR:
+    print("> Armazenando treino")
+    armazenar(g, "output/toda-entrada.tra.out")
 
-alpha = 50
-m = 200
-fs = 20
-im = Image.new('RGB', (g.tam_grade[0] * m, g.tam_grade[1] * m), (200, 200, 200))
-dr = ImageDraw.Draw(im, "RGBA")
+if GERAR_GRADE_RECONHECIMENTO:
+    print("> Gerando grade de reconhecimento")
+    g.grade_de_reconhecimento(entrada_teste)
 
-for i in range(g.tam_grade[0]):
-    for j in range(g.tam_grade[1]):
-        dr.rectangle( ((i * m, j * m), (i * m + m, j * m + m)), fill=(255, 255, 255, 255), outline = "black")
+if CALCULAR_TAXA_ACERTOS:
+    print("> Calculando taxa de acertos")
+    taxa_de_acerto = g.reconhece_lista(entrada_acertos)
+    print("  - Taxa de acerto: %.4f" %(taxa_de_acerto))
 
+if DESENHAR_GRADE_MESCLADA:
+    print("> Desenhando grade mesclada")
+    desenha_grade(g, True, "input/optdigits-orig.cv.in", "output/images/grade_mesclada.png")    #   IMAGEM MESCLADA
 
-'''
-'''
+if DESENHAR_GRADE_RECONHECIMENTO:
+    print("> Desenhando grade de reconhecimento")
+    desenha_grade(g, False, "input/optdigits-orig.cv.in", "output/images/grade_final.png")      #   IMAGEM FINAL
 
-fnt = ImageFont.truetype('Pillow/Tests/fonts/FreeMono.ttf', fs)
-colors = {'0':(255, 255, 0, alpha), #amarelo
-          '1':(255, 128, 0, alpha), #laranja
-          '2':(0, 255, 255, alpha), #azul_piscina
-          '3':(0, 0, 255, alpha),   #azul
-          '4':(255, 0, 255, alpha), #rosa
-          '5':(0, 128, 255, alpha), #azul_twiter
-          '6':(127, 0, 255, alpha), #roxo
-          '7':(128, 255, 0, alpha), #verde_claro
-          '8':(0, 255, 0, alpha),   #verde
-          '9':(255, 0, 0, alpha)    #vermelho
-}
-desenhar = {}
-lista_de_teste = get_input_blocks_training("input/optdigits-orig.cv.in")
-tti = time.time()
-for i in lista_de_teste:
-    z = g.reconhece2(i[0])
-    try:
-        desenhar[z[0]].append(i[1])
-    except:
-        desenhar[z[0]] = [i[1]]
-ttf = time.time()
-
-print("Tempo de reconhecimento:", ttf - tti)
-
-
-
-for i in desenhar:
-    for j in desenhar[i]:
-        dr.rectangle( ((i[1] * m, i[0] * m), (i[1] * m + m, i[0] * m + m)), fill = colors[j], outline = "black")
-
-for i in desenhar:
-    c = 0
-    d = 1
-    for j in desenhar[i]:
-        dr.text(((i[1] * m) + c * fs * 2/3, i[0] * m + d*3/2 * fs/2), j, font = fnt, fill=(0, 0, 0))
-        c += 1
-        if (i[1] * m) + c * fs * 2/3 + fs > (i[1] * m) + m:
-            c = 0
-            d += 1
-
-
-im.save("teste.png")
+print("# Tempo total: %fs" %(time.time() - t0))
