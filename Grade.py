@@ -11,6 +11,7 @@ class Grade:
         self.tam_entrada = tam_entrada
         self.grade = self.grade_aleatoria(tam_grade, tam_entrada)
         self.BMU = None
+        self.neighbors_size = 8
         self.rec_grid = None
 
 
@@ -70,10 +71,11 @@ class Grade:
             self.grade[i[0]][i[1]].pesos = self.repesa_neuronio((i[0], i[1]), entrada, alpha)
 
     def vizinhos2(self, x):
-        l = []
+        l = [x]
         for i in range(self.tam_grade[0]):
             for j in range(self.tam_grade[1]):
                 l.append((i, j))
+        self.neighbors_size = len(l)
         return l
 
     def vizinhanca(self, indice_neuronio):
@@ -85,7 +87,7 @@ class Grade:
     def vizinhanca2(self, indice_neuronio):
         melhor = self.grade[self.BMU[0][0]][self.BMU[0][1]]
         S = dist_eclidiana(indice_neuronio, self.BMU[0])
-        return e ** ((-(S ** 2)) / (2 * ((self.tam_entrada[0] * self.tam_entrada[1]) ** 2)))
+        return e ** ((-(S ** 2)) / (2 * ((self.neighbors_size) ** 2)))
 
     def grade_aleatoria(self, tam_grade, tam_entrada):
         grade = []

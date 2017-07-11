@@ -14,12 +14,12 @@ teste_de_acerto = "input/optdigits-orig.windep.in"      # Arquivo de entrada par
 teste_de_treino = "input/optdigits-orig.cv.in"          # Arquivo de entrada gerar a grade de reconhecimento
 n_iter          = 5                                     # Quantidade de iterações de treino
 
-CARREGAR_TREINO                 = True
-TREINAR                         = False
+CARREGAR_TREINO                 = False
+TREINAR                         = True
 ARMAZENAR                       = False
 GERAR_GRADE_RECONHECIMENTO      = True
 CALCULAR_TAXA_ACERTOS           = True
-DESENHAR_GRADE_MESCLADA         = False
+DESENHAR_GRADE_MESCLADA         = True
 DESENHAR_GRADE_RECONHECIMENTO   = False
 
 ###############################################################################
