@@ -4,8 +4,10 @@ from math import e
 import time
 
 class Grade:
-    def __init__(self, tam_grade, tam_entrada, alpha, taxa):
+    def __init__(self, tam_grade, tam_entrada, alpha, taxa, sigma, s_taxa):
         self.taxa = taxa
+        self.sigma = sigma
+        self.s_taxa = s_taxa
         self.alpha = alpha
         self.tam_grade = tam_grade
         self.tam_entrada = tam_entrada
@@ -67,7 +69,7 @@ class Grade:
     def iteracao(self, entrada, alpha):
         self.BMU = self.melhor_neuronio(entrada)
 
-        for i in self.vizinhos(self.BMU[0]):
+        for i in self.vizinhos2(self.BMU[0]):
             self.grade[i[0]][i[1]].pesos = self.repesa_neuronio((i[0], i[1]), entrada, alpha)
 
     def vizinhos2(self, x):
@@ -87,7 +89,7 @@ class Grade:
     def vizinhanca2(self, indice_neuronio):
         melhor = self.grade[self.BMU[0][0]][self.BMU[0][1]]
         S = dist_eclidiana(indice_neuronio, self.BMU[0])
-        return e ** ((-(S ** 2)) / (2 * ((self.neighbors_size) ** 2)))
+        return e ** ((-(S ** 2)) / (2 * ((self.sigma) ** 2)))
 
     def grade_aleatoria(self, tam_grade, tam_entrada):
         grade = []
@@ -146,4 +148,5 @@ class Grade:
         if pos[0] - 1 in range(tam_grade[0]) and pos[1] in range(tam_grade[1]):
             vizinhos.append([pos[0] - 1, pos[1]])
 
+        self.neighbors_size = len(vizinhos)
         return vizinhos

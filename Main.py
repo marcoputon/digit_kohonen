@@ -8,11 +8,11 @@ from Desenho import *
 
 ########################## VARIAVEIS DE CONFIGURAÇÂO ##########################
 
-carregar_treino = "output/0.5-0.85toda-entrada.tra.out" # Arquivo de treino armazenado anteriormente
+carregar_treino = "output/toda-entrada.tra.out"         # Arquivo de treino armazenado anteriormente
 treinar         = "input/optdigits-orig.tra.in"         # Arquivo de entrada para treinar
-teste_de_acerto = "input/optdigits-orig.windep.in"      # Arquivo de entrada para testar taxa de acerto
+teste_de_acerto = "input/optdigits-orig.tra.in"          # Arquivo de entrada para testar taxa de acerto
 teste_de_treino = "input/optdigits-orig.cv.in"          # Arquivo de entrada gerar a grade de reconhecimento
-n_iter          = 5                                     # Quantidade de iterações de treino
+n_iter          = 10                                     # Quantidade de iterações de treino
 
 CARREGAR_TREINO                 = False
 TREINAR                         = True
@@ -20,7 +20,7 @@ ARMAZENAR                       = False
 GERAR_GRADE_RECONHECIMENTO      = True
 CALCULAR_TAXA_ACERTOS           = True
 DESENHAR_GRADE_MESCLADA         = True
-DESENHAR_GRADE_RECONHECIMENTO   = False
+DESENHAR_GRADE_RECONHECIMENTO   = True
 
 ###############################################################################
 
@@ -31,7 +31,7 @@ entrada_treino = get_input_blocks(treinar)
 entrada_teste = get_input_blocks_training(teste_de_treino)
 
 print("> Gerando grade de neurônios")
-g = Grade((20, 20), (32, 32), 0.5, 0.85)
+g = Grade((20, 20), (32, 32), 0.5, 0.85, 2, 0.9)
 
 if CARREGAR_TREINO:
     print("> Carregando treino")
@@ -44,6 +44,7 @@ if TREINAR:
         print("> Treinamento -", i)
         g.treinar(entrada_treino)
         g.alpha *= g.taxa
+        g.sigma *= g.s_taxa
     tf = time.time()
     print()
     print(">>> Tempo de treinamento: %fs"%(tf - ti))
