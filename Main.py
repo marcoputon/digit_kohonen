@@ -21,9 +21,10 @@ GERAR_GRADE_RECONHECIMENTO      = True
 CALCULAR_TAXA_ACERTOS           = True
 DESENHAR_GRADE_MESCLADA         = True
 DESENHAR_GRADE_RECONHECIMENTO   = True
+GERAR_LOG_RESULTADO             = True
 
-GRID_SIZE_I                     = 15
-GRID_SIZE_J                     = 15
+GRID_SIZE_I                     = 8
+GRID_SIZE_J                     = 8
 
 ALPHA_INICIAL                   = 0.1
 DECRE_ALPHA                     = 0.00009
@@ -79,5 +80,22 @@ if DESENHAR_GRADE_MESCLADA:
 if DESENHAR_GRADE_RECONHECIMENTO:
     print("> Desenhando grade de reconhecimento")
     desenha_grade(g, False, "input/optdigits-orig.cv.in", "output/images/grade_final.png")      #   IMAGEM FINAL
+
+if GERAR_LOG_RESULTADO:
+    print("> Gerando arquivo com Log dos resultados")
+    logFile = open('output/images/logResultados.txt', 'w')
+    strtowrite = 'Parametros de entrada:\n'
+    strtowrite += 'Tamanho da grade: ' + str(GRID_SIZE_I) + 'x' + str(GRID_SIZE_J) + '\n'
+    strtowrite += 'Quantidade de épocas treinadas: ' + str(n_iter) +'\n'
+    strtowrite += 'Alpha inicial: ' + str(ALPHA_INICIAL) +'\n'
+    strtowrite += 'Sigma inicial: ' + str(SIGMA_INICIAL) +'\n'
+    strtowrite += 'Decrementação alpha: ' + str(DECRE_ALPHA) +'\n'
+    strtowrite += 'Decrementação Sigma: ' + str(DECRE_SIGMA) +'\n'
+    
+    strtowrite += '\n\nResultados:\n'
+    strtowrite += 'taxa de acerto: ' + str(taxa_de_acerto) + '\n'
+    
+    logFile.write(strtowrite)
+    logFile.close()
 
 print("# Tempo total: %fs" %(time.time() - t0))

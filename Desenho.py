@@ -32,7 +32,6 @@ def desenha_grade(g, mesclar, tra_path, save_path):
     ttf = time.time()
 
     print("Tempo de reconhecimento: %fs" %(ttf - tti))
-    #print("# Tempo total: %fs" %(time.time() - t0))
     
     #Fonte usada no ubuntu
     #fnt = ImageFont.truetype('Pillow/Tests/fonts/FreeMono.ttf', fs)

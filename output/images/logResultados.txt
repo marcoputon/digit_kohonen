@@ -1,0 +1,11 @@
+Parametros de entrada:
+Tamanho da grade: 8x8
+Quantidade de épocas treinadas: 5
+Alpha inicial: 0.1
+Sigma inicial: 2
+Decrementação alpha: 9e-05
+Decrementação Sigma: 0.0015
+
+
+Resultados:
+taxa de acerto: 80.35160289555326
