@@ -12,7 +12,7 @@ carregar_treino = "output/toda-entrada.tra.out"         # Arquivo de treino arma
 treinar         = "input/optdigits-orig.tra.in"         # Arquivo de entrada para treinar
 teste_de_acerto = "input/optdigits-orig.tra.in"          # Arquivo de entrada para testar taxa de acerto
 teste_de_treino = "input/optdigits-orig.cv.in"          # Arquivo de entrada gerar a grade de reconhecimento
-n_iter          = 10                                     # Quantidade de iterações de treino
+n_iter          = 5                                     # Quantidade de iterações de treino
 
 CARREGAR_TREINO                 = False
 TREINAR                         = True
@@ -22,6 +22,14 @@ CALCULAR_TAXA_ACERTOS           = True
 DESENHAR_GRADE_MESCLADA         = True
 DESENHAR_GRADE_RECONHECIMENTO   = True
 
+GRID_SIZE_I                     = 15
+GRID_SIZE_J                     = 15
+
+ALPHA_INICIAL                   = 0.1
+DECRE_ALPHA                     = 0.00009
+
+SIGMA_INICIAL                   = 2
+DECRE_SIGMA                     = 0.0015
 ###############################################################################
 
 t0 = time.time()
@@ -31,7 +39,9 @@ entrada_treino = get_input_blocks(treinar)
 entrada_teste = get_input_blocks_training(teste_de_treino)
 
 print("> Gerando grade de neurônios")
-g = Grade((20, 20), (32, 32), 0.5, 0.85, 2, 0.9)
+g = Grade((GRID_SIZE_I, GRID_SIZE_J), (32, 32), ALPHA_INICIAL, DECRE_ALPHA, SIGMA_INICIAL, DECRE_SIGMA)
+#def __init__(self, tam_grade, tam_entrada, alpha, taxa, sigma, s_taxa):
+
 
 if CARREGAR_TREINO:
     print("> Carregando treino")
@@ -41,10 +51,10 @@ if TREINAR:
     print("> Treinando")
     ti = time.time()
     for i in range(n_iter):
-        print("> Treinamento -", i)
+        print("> Época: ", i, "| alpha: %.6f"% g.alpha, "| sigma: %.6f"% g.sigma)
         g.treinar(entrada_treino)
-        g.alpha *= g.taxa
-        g.sigma *= g.s_taxa
+        g.alpha -= g.taxa
+        g.sigma -= g.s_taxa
     tf = time.time()
     print()
     print(">>> Tempo de treinamento: %fs"%(tf - ti))

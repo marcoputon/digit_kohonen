@@ -31,9 +31,16 @@ def desenha_grade(g, mesclar, tra_path, save_path):
         desenhar = g.rec_grid
     ttf = time.time()
 
-    print("Tempo de reconhecimento:", ttf - tti)
-
-    fnt = ImageFont.truetype('Pillow/Tests/fonts/FreeMono.ttf', fs)
+    print("Tempo de reconhecimento: %fs" %(ttf - tti))
+    #print("# Tempo total: %fs" %(time.time() - t0))
+    
+    #Fonte usada no ubuntu
+    #fnt = ImageFont.truetype('Pillow/Tests/fonts/FreeMono.ttf', fs)
+    
+    #fonte usada no arch linux
+    fnt = ImageFont.truetype('/usr/share/texmf-dist/fonts/truetype/public/opensans/OpenSans-Bold.ttf', fs)
+    
+    
     colors = {'0':(255, 255, 0, alpha), #amarelo
     '1':(255, 128, 0, alpha), #laranja
     '2':(0, 255, 255, alpha), #azul_piscina
