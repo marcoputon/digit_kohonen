@@ -3,6 +3,12 @@ from Grade import *
 from Leitura import *
 import time
 
+
+'''
+Função para armazenar o treino.
+Percorre toda a matriz de neurônios e escreve os valores no mesmo formato dos
+arquivos de entrada.
+'''
 def armazenar(grade, path):
     f = open(path, "w")
     for i in range(21):
@@ -17,6 +23,26 @@ def armazenar(grade, path):
     f.close()
 
 
+'''
+Gera a string com os pesos de um neurônio, para guardar o treino.
+'''
+def neuronio_para_string(neuronio):
+    n = []
+    for i in range(neuronio.tamanho[0]):
+        l = ""
+        for j in range(neuronio.tamanho[1]):
+            l += str(neuronio.pesos[i, j]) + " "
+            n.append(l[:len(l) - 1])
+            return n
+
+
+'''
+##################################################################################
+Funções iguais as do arquivo Leitura.py, com a diferença de que já cria os objetos
+e colocam na grade que recebem como parametro.
+##################################################################################
+'''
+
 def read_output(path):
     foo = open(path)
 
@@ -24,6 +50,7 @@ def read_output(path):
     for i in foo:
         f.append(i[:len(i) - 1])
     return f[21:]
+
 
 def split_block_out(f):
     blocks = []
@@ -42,14 +69,6 @@ def split_block_out(f):
     return blocks
 
 
-def neuronio_para_string(neuronio):
-    n = []
-    for i in range(neuronio.tamanho[0]):
-        l = ""
-        for j in range(neuronio.tamanho[1]):
-            l += str(neuronio.pesos[i, j]) + " "
-        n.append(l[:len(l) - 1])
-    return n
 
 
 def get_output_blocks(path):
