@@ -10,7 +10,7 @@ from Desenho import *
 
 carregar_treino = "output/toda-entrada.tra.out"         # Arquivo de treino armazenado anteriormente
 treinar         = "input/optdigits-orig.tra.in"         # Arquivo de entrada para treinar
-teste_de_acerto = "input/optdigits-orig.tra.in"          # Arquivo de entrada para testar taxa de acerto
+teste_de_acerto = "input/optdigits-orig.tra.in"         # Arquivo de entrada para testar taxa de acerto
 teste_de_treino = "input/optdigits-orig.cv.in"          # Arquivo de entrada gerar a grade de reconhecimento
 n_iter          = 5                                     # Quantidade de iterações de treino
 
@@ -91,10 +91,10 @@ if GERAR_LOG_RESULTADO:
     strtowrite += 'Sigma inicial: ' + str(SIGMA_INICIAL) +'\n'
     strtowrite += 'Decrementação alpha: ' + str(DECRE_ALPHA) +'\n'
     strtowrite += 'Decrementação Sigma: ' + str(DECRE_SIGMA) +'\n'
-    
+
     strtowrite += '\n\nResultados:\n'
     strtowrite += 'taxa de acerto: ' + str(taxa_de_acerto) + '\n'
-    
+
     logFile.write(strtowrite)
     logFile.close()
 
